@@ -68,14 +68,17 @@ void CharacteristicCbs::onWrite(BLECharacteristic* pCharacteristic)
   }
   else
   {
-    uint32_t uid = val.getData ()[0] | (val.getData ()[1] << 8)
-        | (val.getData ()[2] << 16);
+    BramaPacket_t pkt;
 
-    switch (val.getData ()[3])
+    memcpy(&pkt, val.getData(), sizeof(pkt));
+
+    switch (pkt.cmd)
     {
       case PacketFlight_Rand1:
+        //unexpected
         break;
       case PacketFlight_Rand12:
+        memcpy(currToken, pkt.token, sizeof(currToken));
         break;
       case PacketFlight_AuthHello:
         break;
@@ -134,7 +137,12 @@ void BramaAuthClient::SetNewToken()
   BramaAuthClient::generateToken (currToken);
   if (pCharacteristic != NULL)
   {
-    pCharacteristic->setValue (&currToken[0], sizeof(currToken));
+    BramaPacket_t pkt;
+
+    *(uint32_t*)&pkt = esp_random ();
+    pkt.cmd = PacketFlight_Rand1;
+    memcpy(&pkt.token, currToken, sizeof(currToken));
+    pCharacteristic->setValue((unsigned char *) &pkt, sizeof(BramaPacket_t));
   }
 }
 

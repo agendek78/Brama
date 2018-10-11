@@ -21,6 +21,13 @@ typedef enum
 
 typedef uint8_t BramaToken_t[BRAMA_TOKEN_LEN];
 
+typedef struct __attribute__((packed))
+{
+  uint8_t       cmd;
+  uint8_t       unused[3];
+  BramaToken_t  token;
+} BramaPacket_t;
+
 class ConnectionCBs : public BLEServerCallbacks
 {
 public:

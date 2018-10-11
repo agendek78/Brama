@@ -10,6 +10,7 @@
 
 #include <stdint.h>
 #include "esp_system.h"
+#include "systime.h"
 
 typedef enum
 {
@@ -20,6 +21,10 @@ typedef enum
 
 class Button
 {
+  uint8_t        m_state;
+  ButtonEvType_t m_currEv;
+  SysTime_t      m_lastTime;
+  gpio_num_t     m_pin;
 
 public:
   Button(gpio_num_t i_pin);

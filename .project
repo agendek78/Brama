@@ -39,12 +39,7 @@
 		<link>
 			<name>core/variant</name>
 			<type>2</type>
-			<location>C:/Program Files (x86)/Arduino/hardware/espressif/esp32/variants/esp32</location>
-		</link>
-		<link>
-			<name>libraries/BLE</name>
-			<type>2</type>
-			<location>C:/Program Files (x86)/Arduino/hardware/espressif/esp32/libraries/BLE</location>
+			<location>C:/Program Files (x86)/Arduino/hardware/espressif/esp32/variants/lolin32</location>
 		</link>
 	</linkedResources>
 </projectDescription>

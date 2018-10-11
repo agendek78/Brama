@@ -4,13 +4,17 @@
 #include "esp_system.h"
 #include "BramaAuthClient.h"
 #include "LedIndicator.h"
+#include "Button.h"
+#include "systime.h"
 
 #define OUT1_PIN GPIO_NUM_17
 #define OUT2_PIN GPIO_NUM_16
 #define LED_PIN  GPIO_NUM_4
+#define BTN_PIN  GPIO_NUM_0
 
 BramaAuthClient *BLEAuthServer;
 LedIndicator    *led;
+Button          *btn;
 
 void setup ()
 {
@@ -35,13 +39,26 @@ void setup ()
 
   led = new LedIndicator(LED_PIN);
   led->Set(LedIndicatorType_BlinkSlow);
+
+  btn = new Button(BTN_PIN);
 }
 
 void loop ()
 {
-  // put your main code here, to run repeatedly:
+  ButtonEvType_t ev = btn->Get();
+
+  if (ev == ButtonEv_ShortPress)
+  {
+    led->Set(LedIndicatorType_BlinkFast);
+  }
+  else if (ev == ButtonEv_LongPress)
+  {
+    led->Set(LedIndicatorType_Off);
+  }
+
   //Serial.println (esp_random ());
   //delay (2000);
   //BLEAuthServer->indicate();
   led->DoWork();
+  btn->DoWork();
 }
